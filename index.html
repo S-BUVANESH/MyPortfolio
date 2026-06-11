@@ -34,10 +34,10 @@
      ★ DESIGN SYSTEM — "DEEP SPACE AI LAB"
      EDIT-COLORS: change the palette here
   ============================================================ */
-  :root {
+  :root, html[data-theme="dark"] {
     /* Backgrounds */
     --bg:           #07080D;   /* deep space black-blue */
-    --surface:      #0E1019;   /* card backgrounds */
+    --surface:      rgba(14, 16, 25, 0.7);   /* frosted translucent card backgrounds */
     --surface-2:    #13161F;   /* elevated surfaces */
     --border:       #1E2231;   /* subtle borders */
 
@@ -57,6 +57,102 @@
     --gradient-hero: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(108,99,255,0.12) 0%, transparent 70%);
   }
 
+  html[data-theme="light"] {
+    /* Backgrounds */
+    --bg:           #F8F9FD;   /* clean lab pristine off-white */
+    --surface:      rgba(255, 255, 255, 0.65);   /* frosted translucent card backgrounds */
+    --surface-2:    #F1F3F9;   /* elevated surfaces */
+    --border:       #E2E8F0;   /* subtle borders */
+
+    /* Accents */
+    --accent:       #4F46E5;   /* deep violet for light contrast */
+    --accent-glow:  rgba(79, 70, 229, 0.08);
+    --accent-2:     #D97706;   /* readable dark amber */
+    --accent-3:     #059669;   /* readable dark emerald */
+
+    /* Text */
+    --text-primary: #0F172A;   /* dark slate */
+    --text-body:    #475569;   /* body text */
+    --text-muted:   #94A3B8;   /* metadata labels */
+    --text-dim:     #E2E8F0;   /* watermarks */
+
+    /* Special */
+    --gradient-hero: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(79,70,229,0.06) 0%, transparent 70%);
+  }
+
+  /* Theme Toggle Button Style */
+  .theme-toggle-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    position: relative;
+    cursor: none;
+    transition: all 0.3s ease;
+    z-index: 1001;
+  }
+  .theme-toggle-btn:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 16px var(--accent-glow);
+  }
+  .theme-toggle-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    position: absolute;
+  }
+  
+  html[data-theme="light"] .theme-toggle-btn .sun-icon { opacity: 0; transform: rotate(90deg) scale(0); }
+  html[data-theme="light"] .theme-toggle-btn .moon-icon { opacity: 1; transform: rotate(0) scale(1); }
+  html[data-theme="dark"] .theme-toggle-btn .sun-icon { opacity: 1; transform: rotate(0) scale(1); }
+  html[data-theme="dark"] .theme-toggle-btn .moon-icon { opacity: 0; transform: rotate(-90deg) scale(0); }
+  html:not([data-theme]) .theme-toggle-btn .sun-icon { opacity: 1; transform: rotate(0) scale(1); }
+  html:not([data-theme]) .theme-toggle-btn .moon-icon { opacity: 0; transform: rotate(-90deg) scale(0); }
+
+  /* Light Theme Specific Enhancements */
+  html[data-theme="light"] body {
+    color: var(--text-body);
+  }
+  html[data-theme="light"] .stat-card,
+  html[data-theme="light"] .skill-card,
+  html[data-theme="light"] .project-card,
+  html[data-theme="light"] .cert-card,
+  html[data-theme="light"] .hr-block,
+  html[data-theme="light"] .edu-card {
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+  }
+  html[data-theme="light"] .stat-card:hover,
+  html[data-theme="light"] .skill-card:hover,
+  html[data-theme="light"] .project-card:hover,
+  html[data-theme="light"] .cert-card:hover,
+  html[data-theme="light"] .hr-block:hover,
+  html[data-theme="light"] .edu-card:hover {
+    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.08);
+  }
+  html[data-theme="light"] #nav.is-scrolled {
+    background: rgba(248, 249, 253, 0.85);
+  }
+  html[data-theme="light"] .cursor-ring {
+    border-color: rgba(79, 70, 229, 0.2);
+  }
+  html[data-theme="light"] .preloader-shutter {
+    background: #F8F9FD;
+  }
+  html[data-theme="light"] .preloader-shutter--left {
+    border-right-color: rgba(79, 70, 229, 0.1);
+    box-shadow: inset -50px 0 100px rgba(79, 70, 229, 0.02);
+  }
+  html[data-theme="light"] .preloader-shutter--right {
+    border-left-color: rgba(79, 70, 229, 0.1);
+    box-shadow: inset 50px 0 100px rgba(79, 70, 229, 0.02);
+  }
+
   /* ===== RESET ===== */
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: auto; }
@@ -64,7 +160,7 @@
   .lenis.lenis-smooth { scroll-behavior: auto !important; }
 
   body {
-    background: var(--bg);
+    background: transparent;
     color: var(--text-body);
     font-family: 'Outfit', sans-serif;
     font-weight: 400;
@@ -374,6 +470,131 @@
     to { transform: rotate(-360deg); }
   }
 
+  /* Bounding HUD Frames & Laser Scan Hover Effects */
+  .project-card, .stat-card, .cert-card, .hr-block, .edu-card, .skill-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    --x: 50%;
+    --y: 50%;
+  }
+
+  .project-card::before, .stat-card::before, .cert-card::before, .hr-block::before, .edu-card::before, .skill-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 200px at var(--x) var(--y), rgba(255, 255, 255, 0.08), transparent 80%);
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  html[data-theme="light"] .project-card::before, 
+  html[data-theme="light"] .stat-card::before, 
+  html[data-theme="light"] .cert-card::before, 
+  html[data-theme="light"] .hr-block::before, 
+  html[data-theme="light"] .edu-card::before,
+  html[data-theme="light"] .skill-card::before {
+    background: radial-gradient(circle 200px at var(--x) var(--y), rgba(79, 70, 229, 0.05), transparent 80%);
+  }
+  .project-card:hover::before, .stat-card:hover::before, .cert-card:hover::before, .hr-block:hover::before, .edu-card:hover::before, .skill-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Laser Scanner Line */
+  .card-laser-line {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 4;
+  }
+  
+  /* Bounding Box HUD Brackets Frame */
+  .card-hud-frame {
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(108, 99, 255, 0.12);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 3;
+    transition: opacity 0.4s ease, border-color 0.4s ease;
+  }
+  html[data-theme="light"] .card-hud-frame {
+    border-color: rgba(79, 70, 229, 0.1);
+  }
+
+  /* Brackets in corners of card HUD frames */
+  .card-hud-frame::before, .card-hud-frame::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 1.5px solid var(--accent);
+    opacity: 0.7;
+  }
+  .card-hud-frame::before {
+    top: -1px; left: -1px;
+    border-right: none; border-bottom: none;
+  }
+  .card-hud-frame::after {
+    bottom: -1px; right: -1px;
+    border-left: none; border-top: none;
+  }
+  
+  .card-hud-corner-tr, .card-hud-corner-bl {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 1.5px solid var(--accent);
+    opacity: 0.7;
+  }
+  .card-hud-corner-tr {
+    top: -1px; right: -1px;
+    border-left: none; border-bottom: none;
+  }
+  .card-hud-corner-bl {
+    bottom: -1px; left: -1px;
+    border-right: none; border-top: none;
+  }
+
+  /* Scrolling digital coordinates readout label */
+  .card-hud-readout {
+    position: absolute;
+    bottom: 14px;
+    left: 18px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 3;
+  }
+
+  /* Hover States */
+  .project-card:hover .card-hud-frame,
+  .stat-card:hover  .card-hud-frame,
+  .cert-card:hover  .card-hud-frame,
+  .hr-block:hover   .card-hud-frame,
+  .edu-card:hover   .card-hud-frame,
+  .skill-card:hover .card-hud-frame,
+  .project-card:hover .card-hud-readout,
+  .stat-card:hover  .card-hud-readout,
+  .cert-card:hover  .card-hud-readout,
+  .hr-block:hover   .card-hud-readout,
+  .edu-card:hover   .card-hud-readout,
+  .skill-card:hover .card-hud-readout {
+    opacity: 1;
+  }
+
   /* ============================================================
      ★ 3. CUSTOM CURSOR (desktop only)
   ============================================================ */
@@ -392,8 +613,7 @@
   .cursor-ring {
     width: 36px; height: 36px;
     border: 1px solid var(--border);
-    transition: width 0.25s ease, height 0.25s ease,
-                border-color 0.25s ease, box-shadow 0.25s ease,
+    transition: border-color 0.25s ease, box-shadow 0.25s ease,
                 border-radius 0.25s ease;
   }
   .cursor-ring.is-hover {
@@ -537,9 +757,10 @@
     background: var(--gradient-hero);
   }
   #hero-canvas {
-    position: absolute;
+    position: fixed;
     inset: 0;
-    z-index: 0;
+    z-index: -1;
+    pointer-events: none;
   }
   .hero-inner {
     position: relative;
@@ -743,6 +964,7 @@
     display: inline-flex;
     gap: 0;
     will-change: transform;
+    --marquee-skew: 0deg;
   }
   .marquee:hover .marquee-track { animation-play-state: paused !important; }
   .marquee-track span {
@@ -754,8 +976,14 @@
     transition: color 0.3s ease;
   }
   .marquee-track span:hover { color: var(--accent); }
-  @keyframes marqueeLeft  { from { transform: translateX(0); }    to { transform: translateX(-50%); } }
-  @keyframes marqueeRight { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+  @keyframes marqueeLeft  {
+    from { transform: translateX(0) skewX(var(--marquee-skew, 0deg)); }
+    to { transform: translateX(-50%) skewX(var(--marquee-skew, 0deg)); }
+  }
+  @keyframes marqueeRight {
+    from { transform: translateX(-50%) skewX(var(--marquee-skew, 0deg)); }
+    to { transform: translateX(0) skewX(var(--marquee-skew, 0deg)); }
+  }
   .marquee--ltr .marquee-track { animation: marqueeRight 28s linear infinite; }
   .marquee--rtl .marquee-track { animation: marqueeLeft  32s linear infinite; }
 
@@ -1412,6 +1640,8 @@
   ★ BODY — site structure begins (sections delivered next)
 ============================================================ -->
 <body>
+  <!-- Fixed background backdrop for Option A (Immersive Depth) -->
+  <div id="fixed-bg-backdrop" style="position: fixed; inset: 0; background: var(--bg); z-index: -2; pointer-events: none;"></div>
 
       <!-- ============================================================
     ★ 1. PRELOADER — Cinematic HUD + Shutter Reveal
@@ -1482,6 +1712,14 @@
       <li><a href="#certs"     data-nav="certs">Certs</a></li>
       <li><a href="#contact"   data-nav="contact">Contact</a></li>
     </ul>
+    <div class="nav-actions" style="display: flex; align-items: center; gap: 12px; z-index: 1001;">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+        <!-- Sun icon -->
+        <svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <!-- Moon icon -->
+        <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
     <button class="nav-burger" id="nav-burger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -1641,7 +1879,7 @@
         <!-- Neural network SVG: 3 inputs → 2 hidden → 1 output -->
         <div class="project-visual">
           <svg viewBox="0 0 320 200" fill="none">
-            <g stroke="#1E2231" stroke-width="1.5">
+            <g stroke="var(--border)" stroke-width="1.5">
               <path d="M60 40 L160 70"/><path d="M60 40 L160 130"/>
               <path d="M60 100 L160 70"/><path d="M60 100 L160 130"/>
               <path d="M60 160 L160 70"/><path d="M60 160 L160 130"/>
@@ -1660,7 +1898,7 @@
         <!-- Project link -->
         <a class="project-link" href="https://github.com/S-BUVANESH" target="_blank" rel="noopener">EXPLORE PROJECT →</a>
       </article>
-
+ 
       <!-- Project 2: KOVAI SURGE (emerald / SMART CITY) -->
       <article class="project-card project-card--emerald">
         <span class="project-tag">SMART CITY</span>
@@ -1674,17 +1912,17 @@
         <!-- City grid SVG with moving truck dot -->
         <div class="project-visual">
           <svg viewBox="0 0 320 200" fill="none">
-            <g stroke="#1E2231" stroke-width="1.5">
+            <g stroke="var(--border)" stroke-width="1.5">
               <path d="M40 40 H280"/><path d="M40 120 H280"/><path d="M40 180 H280"/>
               <path d="M80 20 V190"/><path d="M160 20 V190"/><path d="M240 20 V190"/>
             </g>
             <circle class="truck-dot" cx="80" cy="40" r="6" fill="#10B981" filter="drop-shadow(0 0 6px rgba(16,185,129,0.7))"/>
-            <g fill="#1E2231"><rect x="100" y="60" width="40" height="40" rx="2"/><rect x="180" y="135" width="40" height="28" rx="2"/></g>
+            <g fill="var(--border)"><rect x="100" y="60" width="40" height="40" rx="2"/><rect x="180" y="135" width="40" height="28" rx="2"/></g>
           </svg>
         </div>
         <a class="project-link" href="https://github.com/S-BUVANESH" target="_blank" rel="noopener">EXPLORE PROJECT →</a>
       </article>
-
+ 
       <!-- Project 3: FOOD OS (amber / FULL-STACK) -->
       <article class="project-card project-card--amber">
         <span class="project-tag">FULL-STACK</span>
@@ -1698,14 +1936,14 @@
         <!-- UI dashboard wireframe SVG -->
         <div class="project-visual">
           <svg viewBox="0 0 320 200" fill="none">
-            <rect x="40" y="20" width="240" height="160" rx="6" stroke="#1E2231" stroke-width="1.5"/>
-            <path d="M40 50 H280" stroke="#1E2231" stroke-width="1.5"/>
+            <rect x="40" y="20" width="240" height="160" rx="6" stroke="var(--border)" stroke-width="1.5"/>
+            <path d="M40 50 H280" stroke="var(--border)" stroke-width="1.5"/>
             <circle cx="58" cy="35" r="4" fill="#F59E0B"/>
-            <rect x="56" y="66" width="90" height="10" rx="2" fill="#1E2231"/>
-            <rect x="56" y="88" width="200" height="8" rx="2" fill="#13161F"/>
-            <rect x="56" y="104" width="170" height="8" rx="2" fill="#13161F"/>
+            <rect x="56" y="66" width="90" height="10" rx="2" fill="var(--border)"/>
+            <rect x="56" y="88" width="200" height="8" rx="2" fill="var(--surface-2)"/>
+            <rect x="56" y="104" width="170" height="8" rx="2" fill="var(--surface-2)"/>
             <rect x="56" y="130" width="70" height="26" rx="3" stroke="#F59E0B" stroke-width="1"/>
-            <rect x="138" y="130" width="70" height="26" rx="3" stroke="#1E2231" stroke-width="1"/>
+            <rect x="138" y="130" width="70" height="26" rx="3" stroke="var(--border)" stroke-width="1"/>
           </svg>
         </div>
         <a class="project-link" href="https://github.com/S-BUVANESH" target="_blank" rel="noopener">EXPLORE PROJECT →</a>
@@ -1922,6 +2160,29 @@
   ============================================================ -->
   <script>
   // ============================================================
+  // 🌓 INITIAL THEME LOADER — Executes instantly to avoid color flash
+  // ============================================================
+  const getTheme = () => localStorage.getItem('theme') || 'dark';
+  const saveTheme = (t) => localStorage.setItem('theme', t);
+  const applyTheme = (theme) => {
+    document.documentElement.setAttribute('data-theme', theme);
+    window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
+  };
+  applyTheme(getTheme());
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        const current = getTheme();
+        const next = current === 'dark' ? 'light' : 'dark';
+        saveTheme(next);
+        applyTheme(next);
+      });
+    }
+  });
+
+  // ============================================================
   // 🔧 PHOTO CONFIG — Set USE_PHOTO = true and add your photo
   //    at assets/photo.jpg to switch from monogram to photo
   // ============================================================
@@ -1979,6 +2240,82 @@
       }
     });
   });
+
+  // ============================================================
+  // 🛰️ GLITCH DECRYPTION SCRAMBLE HEADINGS
+  // ============================================================
+  function decryptText(element) {
+    const originalText = element.textContent;
+    const glyphs = '01#@$%&*<>[]+=?_█▒░';
+    const textLength = originalText.length;
+    let iterations = 0;
+    
+    if (element.dataset.decrypting === 'true') return;
+    element.dataset.decrypting = 'true';
+    
+    const interval = setInterval(() => {
+      element.innerHTML = originalText
+        .split('')
+        .map((char, index) => {
+          if (char === ' ' || char === '/' || char === '—') {
+            return char;
+          }
+          if (index < iterations) {
+            return originalText[index];
+          }
+          if (index === Math.floor(iterations)) {
+            return `<span style="color: var(--accent); text-shadow: 0 0 8px var(--accent-glow);">${glyphs[Math.floor(Math.random() * glyphs.length)]}</span>`;
+          }
+          return glyphs[Math.floor(Math.random() * glyphs.length)];
+        })
+        .join('');
+        
+      iterations += 0.45;
+      
+      if (iterations >= textLength) {
+        clearInterval(interval);
+        element.innerHTML = originalText;
+        delete element.dataset.decrypting;
+      }
+    }, 35);
+  }
+
+  // ============================================================
+  // 🌀 VELOCITY-BASED SKILLS MARQUEE SKEWING
+  // ============================================================
+  (function initMarqueeSkew() {
+    let lastScrollY = window.scrollY;
+    let scrollVelocity = 0;
+    let skewTarget = 0;
+    let currentSkew = 0;
+    const marqueeTracks = document.querySelectorAll('.marquee-track');
+
+    if (lenis) {
+      lenis.on('scroll', (e) => {
+        scrollVelocity = e.velocity || 0;
+        skewTarget = Math.max(-12, Math.min(12, scrollVelocity * 1.5));
+      });
+    } else {
+      window.addEventListener('scroll', () => {
+        const curr = window.scrollY;
+        const diff = curr - lastScrollY;
+        lastScrollY = curr;
+        scrollVelocity = diff * 0.1;
+        skewTarget = Math.max(-12, Math.min(12, scrollVelocity * 0.8));
+      }, { passive: true });
+    }
+
+    function updateSkew() {
+      requestAnimationFrame(updateSkew);
+      skewTarget += (0 - skewTarget) * 0.08;
+      currentSkew += (skewTarget - currentSkew) * 0.1;
+      
+      marqueeTracks.forEach(track => {
+        track.style.setProperty('--marquee-skew', `${currentSkew}deg`);
+      });
+    }
+    updateSkew();
+  })();
 
   // ============================================================
   // ★ 1. PRELOADER — bar fills 1.8s, then clip-path exit 0.8s
@@ -2331,30 +2668,166 @@
   })();
 
   // ============================================================
-  // ★ 3. CUSTOM CURSOR — instant dot + lerp-lagged ring (0.1)
+  // ★ 3. CUSTOM CURSOR — Snapping Magnetic Cursor & Button Physics
   // ============================================================
   const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
   if (!isTouch) {
     const dot = document.querySelector('.cursor-dot');
     const ring = document.querySelector('.cursor-ring');
     let mx = 0, my = 0, rx = 0, ry = 0;
+    let currW = 36, currH = 36;
+    let isSnapped = false;
+    let targetEl = null;
+
     window.addEventListener('mousemove', (e) => {
       mx = e.clientX; my = e.clientY;
       dot.style.left = mx + 'px'; dot.style.top = my + 'px';
     });
+
     (function ringLoop() {
-      rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1; // lerp factor 0.1
-      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      if (isSnapped && targetEl) {
+        const rect = targetEl.getBoundingClientRect();
+        const tx = rect.left + rect.width / 2;
+        const ty = rect.top + rect.height / 2;
+        
+        // Lerp to center of target
+        rx += (tx - rx) * 0.22;
+        ry += (ty - ry) * 0.22;
+        
+        // Snap dimensions with a small offset padding
+        const targetW = rect.width + 12;
+        const targetH = rect.height + 12;
+        currW += (targetW - currW) * 0.2;
+        currH += (targetH - currH) * 0.2;
+      } else {
+        // Normal mouse tracking
+        rx += (mx - rx) * 0.1;
+        ry += (my - ry) * 0.1;
+        
+        const targetW = ring.classList.contains('is-text') ? 4 : 36;
+        const targetH = ring.classList.contains('is-text') ? 28 : 36;
+        currW += (targetW - currW) * 0.15;
+        currH += (targetH - currH) * 0.15;
+      }
+
+      ring.style.width = currW + 'px';
+      ring.style.height = currH + 'px';
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
       requestAnimationFrame(ringLoop);
     })();
-    // Hover states: links/buttons expand ring; text squishes to a bar
-    document.querySelectorAll('a, button, .cert-card').forEach(el => {
-      el.addEventListener('mouseenter', () => ring.classList.add('is-hover'));
-      el.addEventListener('mouseleave', () => ring.classList.remove('is-hover'));
+
+    // Hover Snapping & Magnetic Pull logic
+    const interactables = document.querySelectorAll('a, button, .footer-socials a, #theme-toggle');
+    interactables.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        isSnapped = true;
+        targetEl = el;
+        ring.classList.add('is-hover');
+        
+        // Sync border radius of the snapping frame with the target element
+        const br = window.getComputedStyle(el).borderRadius;
+        ring.style.borderRadius = br;
+      });
+
+      el.addEventListener('mouseleave', () => {
+        isSnapped = false;
+        targetEl = null;
+        ring.classList.remove('is-hover');
+        ring.style.borderRadius = '50%';
+        
+        // Snap element back to origin with GSAP
+        gsap.to(el, { x: 0, y: 0, scale: 1, duration: 0.5, ease: 'elastic.out(1.1, 0.4)' });
+      });
+
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        
+        // Pull item slightly toward mouse (magnetic pull)
+        gsap.to(el, {
+          x: x * 0.3,
+          y: y * 0.3,
+          duration: 0.25,
+          ease: 'power2.out'
+        });
+      });
     });
+
+    // Text Hover (squishes ring into a vertical bar)
     document.querySelectorAll('p, h1, h2, h3, .about-text').forEach(el => {
+      if (el.closest('a') || el.closest('button')) return;
       el.addEventListener('mouseenter', () => ring.classList.add('is-text'));
-      el.addEventListener('mouseleave', () => ring.classList.remove('is-text'));
+    });
+  }
+
+  // ============================================================
+  // ★ 3B. CARD HUD SCANNING & GLARE REFLECTIONS (desktop only)
+  // ============================================================
+  if (!isTouch) {
+    const cards = document.querySelectorAll('.project-card, .stat-card, .cert-card, .hr-block, .edu-card');
+    cards.forEach((card, idx) => {
+      // Inject laser sweep line
+      const laser = document.createElement('div');
+      laser.className = 'card-laser-line';
+      card.appendChild(laser);
+      
+      // Inject HUD frame
+      const frame = document.createElement('div');
+      frame.className = 'card-hud-frame';
+      
+      const tr = document.createElement('div');
+      tr.className = 'card-hud-corner-tr';
+      frame.appendChild(tr);
+      
+      const bl = document.createElement('div');
+      bl.className = 'card-hud-corner-bl';
+      frame.appendChild(bl);
+      
+      card.appendChild(frame);
+      
+      // Inject HUD digital readout
+      const readout = document.createElement('div');
+      readout.className = 'card-hud-readout';
+      const rx = (Math.random() * 100).toFixed(2);
+      const ry = (Math.random() * 100).toFixed(2);
+      readout.textContent = `[LOCK_${idx} // SYS_STABLE // POS:${rx}.${ry}]`;
+      card.appendChild(readout);
+      
+      // Laser scan sweep trigger on hover
+      let scanTl = null;
+      card.addEventListener('mouseenter', () => {
+        gsap.set(laser, { top: '0%', opacity: 0.8 });
+        scanTl = gsap.timeline({ repeat: -1 });
+        scanTl.to(laser, {
+          top: '100%',
+          duration: 2.2,
+          ease: 'power1.inOut'
+        }).to(laser, {
+          opacity: 0,
+          duration: 0.1
+        });
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        if (scanTl) {
+          scanTl.kill();
+          scanTl = null;
+        }
+        gsap.to(laser, { opacity: 0, duration: 0.3 });
+      });
+
+      // Track cursor position to update glare reflection radial-gradient coordinates
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const xp = Math.round((x / rect.width) * 100);
+        const yp = Math.round((y / rect.height) * 100);
+        card.style.setProperty('--x', xp + '%');
+        card.style.setProperty('--y', yp + '%');
+      });
     });
   }
 
@@ -2394,7 +2867,7 @@
   }));
 
   // ============================================================
-  // ★ 5A. THREE.JS HERO — wireframe icosahedra + star points
+  // ★ 5A. THREE.JS HERO — dynamic neural node constellation
   //       Disabled on mobile (CSS gradient fallback)
   // ============================================================
   const isMobile = window.innerWidth < 768;
@@ -2403,47 +2876,234 @@
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.z = 14;
+    
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     mount.appendChild(renderer.domElement);
 
-    // 14 floating wireframe icosahedra in --border colour
-    const icosahedra = [];
-    const wireMat = new THREE.MeshBasicMaterial({ color: 0x1E2231, wireframe: true });
-    for (let i = 0; i < 14; i++) {
-      const size = 0.5 + Math.random() * 1.8;
-      const mesh = new THREE.Mesh(new THREE.IcosahedronGeometry(size, 0), wireMat);
-      mesh.position.set((Math.random() - 0.5) * 28, (Math.random() - 0.5) * 16, (Math.random() - 0.5) * 10 - 2);
-      mesh.userData.axis = new THREE.Vector3(Math.random(), Math.random(), Math.random()).normalize();
-      mesh.userData.speed = 0.002 + Math.random() * 0.004;
-      scene.add(mesh);
-      icosahedra.push(mesh);
+    // 80 dynamic neural node points
+    const nodeCount = 80;
+    const nodes = [];
+    const nodeGeo = new THREE.BufferGeometry();
+    const nodePositions = new Float32Array(nodeCount * 3);
+    for (let i = 0; i < nodeCount; i++) {
+      const p = {
+        x: (Math.random() - 0.5) * 32,
+        y: (Math.random() - 0.5) * 18,
+        z: (Math.random() - 0.5) * 8 - 2,
+        vx: (Math.random() - 0.5) * 0.02,
+        vy: (Math.random() - 0.5) * 0.02,
+        vz: (Math.random() - 0.5) * 0.01,
+        seed: Math.random() * Math.PI * 2
+      };
+      nodes.push(p);
+      nodePositions[i * 3] = p.x;
+      nodePositions[i * 3 + 1] = p.y;
+      nodePositions[i * 3 + 2] = p.z;
+    }
+    nodeGeo.setAttribute('position', new THREE.BufferAttribute(nodePositions, 3));
+
+    // Glow texture builder
+    function createHeroNodeTexture(theme) {
+      const pCanvas = document.createElement('canvas');
+      pCanvas.width = 16;
+      pCanvas.height = 16;
+      const ctx = pCanvas.getContext('2d');
+      const grad = ctx.createRadialGradient(8, 8, 0, 8, 8, 8);
+      if (theme === 'light') {
+        grad.addColorStop(0, 'rgba(79, 70, 229, 1)');
+        grad.addColorStop(0.3, 'rgba(79, 70, 229, 0.6)');
+        grad.addColorStop(1, 'rgba(248, 249, 253, 0)');
+      } else {
+        grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+        grad.addColorStop(0.3, 'rgba(108, 99, 255, 0.7)');
+        grad.addColorStop(1, 'rgba(7, 8, 13, 0)');
+      }
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 16, 16);
+      return new THREE.CanvasTexture(pCanvas);
     }
 
-    // 300 sparse star points
+    const nodesMat = new THREE.PointsMaterial({
+      size: 0.65,
+      transparent: true,
+      opacity: 0.85,
+      map: createHeroNodeTexture(getTheme()),
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      sizeAttenuation: true
+    });
+    const nodePoints = new THREE.Points(nodeGeo, nodesMat);
+    scene.add(nodePoints);
+
+    // 300 background stars
     const starGeo = new THREE.BufferGeometry();
     const starPos = new Float32Array(300 * 3);
     for (let i = 0; i < 300 * 3; i++) starPos[i] = (Math.random() - 0.5) * 60;
     starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-    const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({
-      color: 0xffffff, size: 1, sizeAttenuation: false, transparent: true, opacity: 0.6
-    }));
+    
+    const starsMat = new THREE.PointsMaterial({
+      color: getTheme() === 'light' ? 0x475569 : 0xffffff,
+      size: 1,
+      sizeAttenuation: false,
+      transparent: true,
+      opacity: getTheme() === 'light' ? 0.15 : 0.6
+    });
+    const stars = new THREE.Points(starGeo, starsMat);
     scene.add(stars);
 
-    // Mouse parallax: ±3% of scene
-    let targetX = 0, targetY = 0;
+    // Dynamic Connections Setup
+    const maxConnections = 150;
+    const lineGeo = new THREE.BufferGeometry();
+    const linePositions = new Float32Array(maxConnections * 2 * 3);
+    const lineColors = new Float32Array(maxConnections * 2 * 3);
+    lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+    lineGeo.setAttribute('color', new THREE.BufferAttribute(lineColors, 3));
+    
+    const lineMat = new THREE.LineBasicMaterial({
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.35,
+      blending: THREE.AdditiveBlending
+    });
+    const lineMesh = new THREE.LineSegments(lineGeo, lineMat);
+    scene.add(lineMesh);
+
+    // Raycasting for Mouse Gravity/Attraction
+    const raycaster = new THREE.Raycaster();
+    const mouseNDC = new THREE.Vector2(-999, -999);
+    const zPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+    const mouse3D = new THREE.Vector3();
+
     window.addEventListener('mousemove', (e) => {
-      targetX = (e.clientX / window.innerWidth - 0.5) * 0.06;
-      targetY = (e.clientY / window.innerHeight - 0.5) * 0.06;
+      mouseNDC.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseNDC.y = -(e.clientY / window.innerHeight) * 2 + 1;
     });
 
+    // Reactive Theme Syncing
+    window.addEventListener('themeChanged', (e) => {
+      const theme = e.detail.theme;
+      nodesMat.map = createHeroNodeTexture(theme);
+      nodesMat.needsUpdate = true;
+      starsMat.color.setHex(theme === 'light' ? 0x475569 : 0xffffff);
+      starsMat.opacity = theme === 'light' ? 0.15 : 0.6;
+      starsMat.needsUpdate = true;
+    });
+
+    // Mouse parallax variables
+    let targetX = 0, targetY = 0;
+    window.addEventListener('mousemove', (e) => {
+      targetX = (e.clientX / window.innerWidth - 0.5) * 0.05;
+      targetY = (e.clientY / window.innerHeight - 0.5) * 0.05;
+    });
+
+    // WebGL loop
     (function animate3d() {
       requestAnimationFrame(animate3d);
-      icosahedra.forEach(m => m.rotateOnAxis(m.userData.axis, m.userData.speed));
+
+      // Mouse project to 3D coords
+      raycaster.setFromCamera(mouseNDC, camera);
+      raycaster.ray.intersectPlane(zPlane, mouse3D);
+
+      const pos = nodeGeo.attributes.position.array;
+      const lPos = lineGeo.attributes.position.array;
+      const lCol = lineGeo.attributes.color.array;
+      const theme = getTheme();
+      const accentColor = theme === 'light' ? new THREE.Color(0x4F46E5) : new THREE.Color(0x6C63FF);
+
+      // Update node physics
+      for (let i = 0; i < nodeCount; i++) {
+        const p = nodes[i];
+
+        // Attraction to mouse
+        const dx = mouse3D.x - p.x;
+        const dy = mouse3D.y - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 6) {
+          const force = (6 - dist) * 0.0008;
+          p.vx += dx * force;
+          p.vy += dy * force;
+        }
+
+        // Apply friction
+        p.vx *= 0.98;
+        p.vy *= 0.98;
+
+        // Apply subtle random drift
+        p.vx += (Math.random() - 0.5) * 0.002;
+        p.vy += (Math.random() - 0.5) * 0.002;
+
+        p.x += p.vx;
+        p.y += p.vy;
+        p.z += p.vz;
+
+        // Bounce boundaries
+        if (p.x > 18 || p.x < -18) p.vx *= -1;
+        if (p.y > 10 || p.y < -10) p.vy *= -1;
+
+        pos[i * 3] = p.x;
+        pos[i * 3 + 1] = p.y;
+        pos[i * 3 + 2] = p.z;
+      }
+      nodeGeo.attributes.position.needsUpdate = true;
+
+      // Draw connections
+      let lineIdx = 0;
+      for (let a = 0; a < nodeCount; a++) {
+        for (let b = a + 1; b < nodeCount; b++) {
+          const dx = nodes[a].x - nodes[b].x;
+          const dy = nodes[a].y - nodes[b].y;
+          const dz = nodes[a].z - nodes[b].z;
+          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+          if (dist < 4.2 && lineIdx < maxConnections) {
+            const idx = lineIdx * 6;
+            lPos[idx] = nodes[a].x;
+            lPos[idx + 1] = nodes[a].y;
+            lPos[idx + 2] = nodes[a].z;
+
+            lPos[idx + 3] = nodes[b].x;
+            lPos[idx + 4] = nodes[b].y;
+            lPos[idx + 5] = nodes[b].z;
+
+            // Fade colors based on distance
+            const alpha = 1 - (dist / 4.2);
+            lCol[idx] = accentColor.r * alpha;
+            lCol[idx + 1] = accentColor.g * alpha;
+            lCol[idx + 2] = accentColor.b * alpha;
+
+            lCol[idx + 3] = accentColor.r * alpha;
+            lCol[idx + 4] = accentColor.g * alpha;
+            lCol[idx + 5] = accentColor.b * alpha;
+
+            lineIdx++;
+          }
+        }
+      }
+      
+      // Clear unused lines
+      for (let i = lineIdx; i < maxConnections; i++) {
+        const idx = i * 6;
+        lPos[idx] = 0; lPos[idx + 1] = 0; lPos[idx + 2] = 0;
+        lPos[idx + 3] = 0; lPos[idx + 4] = 0; lPos[idx + 5] = 0;
+        lCol[idx] = 0; lCol[idx + 1] = 0; lCol[idx + 2] = 0;
+        lCol[idx + 3] = 0; lCol[idx + 4] = 0; lCol[idx + 5] = 0;
+      }
+      lineGeo.attributes.position.needsUpdate = true;
+      lineGeo.attributes.color.needsUpdate = true;
+
+      // Parallax camera lerp + scroll zoom-through
       camera.position.x += (targetX * 14 - camera.position.x) * 0.05;
       camera.position.y += (-targetY * 14 - camera.position.y) * 0.05;
-      camera.lookAt(scene.position);
+
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = maxScroll > 0 ? (window.scrollY / maxScroll) : 0;
+      const targetZ = 14 - scrollPercent * 28; // zooms from 14 down to -14
+      camera.position.z += (targetZ - camera.position.z) * 0.08;
+
+      camera.lookAt(new THREE.Vector3(0, 0, -50));
+
       renderer.render(scene, camera);
     })();
 
@@ -2482,11 +3142,15 @@
   // ★ SCROLL ANIMATIONS — ScrollTrigger (default start: top 85%)
   // ============================================================
   if (hasGSAP && hasScrollTrigger) {
-    // Section labels slide in from left
+    // Section labels slide in from left and decrypt
     document.querySelectorAll('.section-label').forEach(el => {
       gsap.from(el, {
         x: -30, opacity: 0, duration: 0.5, ease: 'power2.out',
-        scrollTrigger: { trigger: el, start: 'top 85%' }
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          onEnter: () => decryptText(el)
+        }
       });
     });
 
